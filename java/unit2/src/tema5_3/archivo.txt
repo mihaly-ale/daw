@@ -1,0 +1,13 @@
+UT02_T05_03_E03.java
+
+Programa que recibe un directorio y visualice su contenido. 
+
+A)
+	Realizar las validaciones
+    Que se pase exactamente un parámetro.
+    Que la ruta exista. 
+    Que sea un directorio.
+    Muestra su contenido o indica si está vacío. 
+    
+B)
+	Que añada si los elementos son ficheros o directorios 

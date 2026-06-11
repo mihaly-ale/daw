@@ -1,0 +1,7 @@
+# glob pattern for all .metadata folder
+# patrón glob para todas las carpetas de .metadata
+**/.metadata/
+
+# build artifacts
+bin/
+*.class
