@@ -1,4 +1,4 @@
-package UT04_T01_Ficheros_UsuariosContrasena;
+package tema1.UT04_T01_Ficheros_UsuariosContrasena;
 
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;

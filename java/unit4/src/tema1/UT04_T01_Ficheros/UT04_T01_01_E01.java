@@ -1,4 +1,4 @@
-package UT04_Tema01_Ficheros;
+package tema1.UT04_T01_Ficheros;
 
 import java.io.File;
 import java.io.FileInputStream;
