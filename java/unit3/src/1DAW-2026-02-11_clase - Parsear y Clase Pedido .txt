@@ -1,0 +1,253 @@
+----------- Excepciones no comprobadas
+
+public class prueba {
+	public static void main(String[] args) {
+		// edades negativas, porcentajes mayores a 100,... -->  IllegalArgumentException
+		//establecerPorcentaje(120, -1); 
+		//setNombreUsuario(""); 
+		
+		try {
+			setPeriodo(LocalDate.of(2026, 2, 1), LocalDate.of(2024, 2, 10)); //-->  IllegalArgumentException
+			System.out.println(Integer.parseInt("4a2")); //NumberFormatException
+		} catch (NumberFormatException e) {
+			System.out.println(e.toString());
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.toString());
+		}
+		System.out.println("Final del programa...");
+	}	
+	
+	public static void setPeriodo(LocalDate fechaInicio, LocalDate fechaFin) { 
+		if (fechaFin.isBefore(fechaInicio)) 
+		throw new IllegalArgumentException("La fecha de fin debe ser posterior a la de inicio." 
+				+ "Recibido: inicio=" + fechaInicio + ", fin=" + fechaFin); 
+		} 
+	
+	public static void setNombreUsuario(String nombreUsuario) { 
+		if (nombreUsuario.isBlank()) 
+			throw new IllegalArgumentException("El nombre de usuario no puede estar vacío.");
+		//if (nombreUsuario == null) 
+			//throw new IllegalArgumentException("El nombre no puede ser null."); 
+		} 
+	
+	public static void establecerPorcentaje(int p, double cantidad) { 
+		if (p < 0 || p > 100) 
+			throw new IllegalArgumentException("El porcentaje debe estar entre 0 y 100."); 
+		if (cantidad <= 0) 
+			throw new IllegalArgumentException("La cantidad debe ser positiva."); 
+		} 
+}
+
+--------------------------- Parsear
+
+
+enum UnidadAngulo { // representar unidades de ángulo 
+	GRADOS, RADIANES 
+} 
+
+public class prueba {
+	public static void main(String[] args) {
+		String tipoAngulo ="GRAaaaaaDOS";
+		UnidadAngulo uA = UnidadAngulo.valueOf(tipoAngulo);
+		
+		//Operaciones matemáticas
+		String texto = "90";
+		double grados = Double.parseDouble(texto);
+		double radianes = Math.toRadians(grados);  
+		System.out.println(Math.sin(radianes));
+		
+		//Pedir al usuario una fecha
+		try {
+			LocalDate fecha = LocalDate.parse("2024-02-30");
+			
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");  
+			System.out.println(fecha.format(formato)); // 
+		} catch (DateTimeParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.toString());
+		}
+	}
+}
+
+
+-------------------------- Pedido, partimos del siguiente código
+
+package Temas;
+class Pedido { 
+	private String id;
+
+	public Pedido(String id) throws Exception { 
+		pedidoValido(id);
+		
+		this.id = id; 
+		} 
+	
+	private void pedidoValido(String id) throws Exception {
+		if (!id.matches("P-\\d{3}")) 
+			throw new Exception("[" + id + "] Formato debe ser: P-000");
+	}
+}
+
+public class prueba {
+	public static void main(String[] args) {
+	try {
+		Pedido p1 = new Pedido("P-888");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+}
+
+----------------------------------con validaciones
+
+package Temas;
+
+import java.util.Objects;
+
+class Pedido { 
+	private String id; //P-000
+	private String nombreProducto;
+	private String descripcionProducto;
+	private int cantidadProducto;
+
+	
+	public Pedido(String id, String nombreProducto, String descripcionProducto, 
+			int cantidadProducto) throws Exception {
+		pedidoValido(id);
+		
+		this.id = id;
+		
+		//if (nombreProducto == null) throw new NullPointerException();
+		
+		this.nombreProducto = 
+			Objects.requireNonNull(nombreProducto, "El producto no debe ser null").trim();
+		if (nombreProducto.trim().isEmpty()) 
+			throw new IllegalArgumentException("El producto no pede ser vacío");
+		
+		this.descripcionProducto = descripcionProducto ==null ? "" : descripcionProducto.trim();
+		
+		if (cantidadProducto < 1)
+			throw new IllegalArgumentException("La cantidad debe ser mayor que 0");
+		this.cantidadProducto = cantidadProducto;
+	}
+
+	private void pedidoValido(String id) throws Exception {
+		if (!id.matches("P-\\d{3}")) 
+			throw new Exception("[" + id + "] Formato debe ser: P-000");
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", nombreProducto=" + nombreProducto + ", descripcionProducto="
+				+ descripcionProducto + ", cantidadProducto=" + cantidadProducto + "]";
+	}
+}
+
+public class prueba {
+	public static void main(String[] args) {
+	try {
+		String nomProd="Peras";
+		
+		Pedido p1 = new Pedido("P-888",nomProd, "Compradas", 2);
+		System.out.println(p1);
+	} catch (Exception e) {
+		System.out.println(e.toString());
+	}
+	System.out.println("Final programa...");
+	}
+}
+
+
+----------------------------------- con validaciones en métodos
+
+
+
+import java.util.Objects;
+
+class Pedido {
+	private String id; // P-000
+	private String nombreProducto;
+	private String descripcionProducto;
+	private int cantidadProducto;
+
+	public Pedido(String id, String nombreProducto, String descripcionProducto, int cantidadProducto) throws Exception {
+		this.id = validarId(id);
+		this.nombreProducto = validarNombre(nombreProducto);
+		this.descripcionProducto = validarDescripcion(descripcionProducto);
+		this.cantidadProducto = validarCantidad(cantidadProducto);
+	}
+
+	private String validarId(String id) {
+		Objects.requireNonNull(id, "El id no puede ser null");
+		
+		if (!id.matches("P-\\d{3}")) {
+			throw new IllegalArgumentException("El id debe tener formato P-000");
+		}
+		return id;
+	}
+
+	private String validarNombre(String nombre) {
+		Objects.requireNonNull(nombre, "El nombre no puede ser null");
+		nombre = nombre.trim();
+		if (nombre.isEmpty()) {
+			throw new IllegalArgumentException("El nombre no puede estar vacío");
+		}
+		return nombre;
+	}
+
+	private String validarDescripcion(String descripcion) {
+		return (descripcion == null) ? "" : descripcion.trim();
+	}
+
+	private int validarCantidad(int cantidad) {
+		if (cantidad <= 0) {
+			throw new IllegalArgumentException("La cantidad debe ser mayor que cero");
+		}
+		return cantidad;
+	}
+
+	/*
+	 * public Pedido(String id, String nombreProducto, String descripcionProducto,
+	 * int cantidadProducto) throws Exception { pedidoValido(id);
+	 * 
+	 * this.id = id;
+	 * 
+	 * //if (nombreProducto == null) throw new NullPointerException();
+	 * 
+	 * this.nombreProducto = Objects.requireNonNull(nombreProducto,
+	 * "El producto no debe ser null").trim(); if (nombreProducto.trim().isEmpty())
+	 * throw new IllegalArgumentException("El producto no pede ser vacío");
+	 * 
+	 * this.descripcionProducto = descripcionProducto ==null ? "" :
+	 * descripcionProducto.trim();
+	 * 
+	 * if (cantidadProducto < 1) throw new
+	 * IllegalArgumentException("La cantidad debe ser mayor que 0");
+	 * this.cantidadProducto = cantidadProducto; }
+	 */
+	private void pedidoValido(String id) throws Exception {
+		if (!id.matches("P-\\d{3}"))
+			throw new Exception("[" + id + "] Formato debe ser: P-000");
+	}
+
+	@Override
+	public String toString() {
+		return "Pedido [id=" + id + ", nombreProducto=" + nombreProducto + ", descripcionProducto="
+				+ descripcionProducto + ", cantidadProducto=" + cantidadProducto + "]";
+	}
+}
+
+public class prueba {
+	public static void main(String[] args) {
+		try {
+			String nomProd = "Peras";
+
+			Pedido p1 = new Pedido("P-888", nomProd, "Compradas", 2);
+			System.out.println(p1);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		System.out.println("Final programa...");
+	}
+}
