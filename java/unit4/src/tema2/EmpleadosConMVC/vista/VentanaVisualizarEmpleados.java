@@ -7,6 +7,8 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,8 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import Ventanas.uBorders;
 
 public class VentanaVisualizarEmpleados extends JFrame {
+	// seed
 	private String[] labels = { "Nombre", "Sueldo", "Fecha contrato", "Departamento", "Tipo", "Incentivo" };
 	private String[] iconos = { "◀◀", "◀", "▶", "▶▶" };
 	private String[] tipoTrabajadores = { "empleado", "jefe" };
@@ -32,19 +39,26 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		setTitle("Visualizar Empleados");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		// wrapper
+		JPanel contenido = new JPanel();
+		contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
 		// panel superior
 		JPanel datosPanel = crearPanelDatos();
 		// panel inferior
 		JPanel navegacionPanel = crearPanelNavegacion();
 
 		// a JFrame
-		add(datosPanel);
-		add(navegacionPanel, BorderLayout.SOUTH);
+		contenido.add(datosPanel);
+		contenido.add(Box.createVerticalStrut(10));
+		contenido.add(navegacionPanel, BorderLayout.SOUTH);
 		// System.out.println(this.getLayout()); // por defecto es BorderLayout
+		add(contenido);
 		pack();
-		
+
+		this.mostrarSinEmpleados();
+
 		// FIXME: delete !!!
-		// ******* TEST *******	
+		// ******* TEST *******
 //		populateFields.populate(JTextFields, "abcdefg");
 		// *******************
 
@@ -82,14 +96,15 @@ public class VentanaVisualizarEmpleados extends JFrame {
 				fila.add(btnGrupoFisical, BorderLayout.EAST);
 
 			} else {
+				JLabels[i] = new JLabel(labels[i] + ":");
+				fila.add(JLabels[i], BorderLayout.WEST);
+
 				JTextFields[i] = new JTextField();
 				JTextFields[i].setColumns(anchoTextField);
 				fila.add(JTextFields[i], BorderLayout.EAST);
-
-				JLabels[i] = new JLabel(labels[i] + ":");
-				fila.add(JLabels[i], BorderLayout.WEST);
 			}
 
+			fila.add(Box.createHorizontalStrut(50), BorderLayout.CENTER, 1);
 			panel.add(fila);
 		}
 
@@ -129,7 +144,7 @@ public class VentanaVisualizarEmpleados extends JFrame {
 
 	public void mostrarEmpleado(String nombre, String sueldo, String fechaContrato, String departamento, boolean esJefe,
 			String incentivo, int indiceActual, int cantidadEmpleados) {
-		
+
 		getJTextField(0).setText(nombre);
 		getJTextField(1).setText(sueldo);
 		getJTextField(2).setText(fechaContrato);
@@ -144,14 +159,14 @@ public class VentanaVisualizarEmpleados extends JFrame {
 	public JButton[] getJButtons() {
 		return JButtons;
 	}
-	
+
 	public JButton getJButton(int indice) {
 		return JButtons[indice];
 	}
 
 	public JTextField getJTextField(int indice) {
 		if (indice == 4) {
-			
+
 			System.err.println(
 					"Indice 4 es el de \"Tipo\": no es un JTextField. Para \"Incentivo\" solicita el indice 5");
 		}
@@ -165,10 +180,10 @@ public class VentanaVisualizarEmpleados extends JFrame {
 	public JLabel getLabelPagination() {
 		return labelPagination;
 	}
-	
+
 	// ACTIONLISTENER
-	public void conectarControlador(ActionListener al) {		
-		for (JButton b: this.getJButtons()) {
+	public void conectarControlador(ActionListener al) {
+		for (JButton b : this.getJButtons()) {
 			b.addActionListener(al);
 		}
 	}
