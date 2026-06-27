@@ -1,26 +1,22 @@
 package mvc;
 
-// database
-// independent from the view
-// serves as the pattern of the data - no actual instances are created here
-
 public class StudentModel {
-	private String studentId;
+	private String rollNo;
 	private String name;
 
-	// constructor
-	public StudentModel(String studentId, String name) {
-		this.studentId = studentId;
+	// constuctor
+	public StudentModel(String rollNo, String name) {
+		this.rollNo = rollNo;
 		this.name = name;
 	}
 
 	// getters, setters
-	public String getStudentId() {
-		return studentId;
+	public String getRollNo() {
+		return rollNo;
 	}
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
+	public void setRollNo(String rollNo) {
+		this.rollNo = rollNo;
 	}
 
 	public String getName() {

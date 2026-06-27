@@ -1,11 +1,12 @@
 package mvc;
 
-// the middleman - business logic
-// the view only talks to the controller
-// the controller talks to the model
 public class StudentController {
 	private StudentModel studentModel;
 	private StudentView studentView;
+
+	public StudentController getStudentController() {
+		return this;
+	}
 
 	// constructor
 	public StudentController(StudentModel studentModel, StudentView studentView) {
@@ -13,7 +14,7 @@ public class StudentController {
 		this.studentView = studentView;
 	}	
 
-	// control model object
+	// getters, setters
 	public String getStudentName() {
 		return studentModel.getName();
 	}
@@ -23,17 +24,17 @@ public class StudentController {
 		studentModel.setName(name);
 	}
 
-	public String getStudentId() {
-		return studentModel.getStudentId();
+	public String getStudentRoll() {
+		return studentModel.getRollNo();
 	}
 
-	public void setStudentId(String studentId) {
-		studentModel.setStudentId(studentId);
+	public void setStudentRoll(String roll) {
+		studentModel.setRollNo(roll);
 	}
 
-	// control view object
+	// updateView
 	public void updateView() {
-		studentView.printDetails(studentModel.getName(), studentModel.getStudentId());
+		studentView.printDetails(getStudentController());
 	}
 
 }

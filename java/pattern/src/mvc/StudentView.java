@@ -1,14 +1,11 @@
 package mvc;
-// GUI (show and update)
-// stateless - no data between calls
-// no internal data on its own (no fields)
 
 public class StudentView {
 
-	public void printDetails(String name, String studentId) {
+	public void printDetails(StudentController controller) {
 		System.out.println("Student details:");
-		System.out.println("Name: " + name);
-		System.out.println("Student ID: " + studentId);
+		System.out.println("Name " + controller.getStudentName());
+		System.out.println("Roll: " + controller.getStudentRoll());
 
 	}
 }

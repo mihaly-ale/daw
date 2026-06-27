@@ -2,7 +2,7 @@ package mvc;
 
 public class StudentRepository {
 
-	public StudentModel retrieveStudent(String studentId, String name) {
-		return new StudentModel(studentId, name);
+	public StudentModel retrieveStudent(String rollNo, String name) {
+		return new StudentModel(rollNo, name);
 	}
 }
