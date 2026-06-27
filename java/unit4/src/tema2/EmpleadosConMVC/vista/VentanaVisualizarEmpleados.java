@@ -11,29 +11,34 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
-import Ventanas.uBorders;
 
 public class VentanaVisualizarEmpleados extends JFrame {
 	// seed
 	private String[] labels = { "Nombre", "Sueldo", "Fecha contrato", "Departamento", "Tipo", "Incentivo" };
-	private String[] iconos = { "◀◀", "◀", "▶", "▶▶" };
+	private String[] iconosNavegacion = { "◀◀", "◀", "▶", "▶▶" };
 	private String[] tipoTrabajadores = { "empleado", "jefe" };
+	private String[] filtroButtonLabels = { "Aplicar", "Limpiar" };
+	private String[] departamentoCheckboxLabels = { "Contabilidad", "Informática", "RRHH", "Ventas" };
 
 	// componentes
-	private JTextField[] JTextFields = new JTextField[labels.length];
+	// => filtro
+	private JCheckBox[] departamentoCheckboxes = new JCheckBox[departamentoCheckboxLabels.length];
+	private JCheckBox[] tipoCheckboxes = new JCheckBox[tipoTrabajadores.length];
+	private JButton[] filtroButtons = new JButton[filtroButtonLabels.length];
+	// => datos
+	private JTextField[] camposTexto = new JTextField[labels.length];
 	// posición 4 es null - Tipo no crea JTextField, sino botones del grupo
-	private JLabel[] JLabels = new JLabel[labels.length];
-	private JButton[] JButtons = new JButton[iconos.length];
-	private JRadioButton[] JRadioButtons = new JRadioButton[tipoTrabajadores.length];
-	private JLabel labelPagination = new JLabel("");
+	private JLabel[] etiquetasCampo = new JLabel[labels.length];
+	// => navegación
+	private JButton[] botononesNavegacion = new JButton[iconosNavegacion.length];
+	private JRadioButton[] botonesRadio= new JRadioButton[tipoTrabajadores.length];
+	private JLabel etiquetaPaginacion = new JLabel("");
 
 	public VentanaVisualizarEmpleados() {
 		setTitle("Visualizar Empleados");
@@ -42,15 +47,16 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		// wrapper
 		JPanel contenido = new JPanel();
 		contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
-		// panel superior
+		JPanel filtroPanel = crearPanelFiltros();
 		JPanel datosPanel = crearPanelDatos();
-		// panel inferior
 		JPanel navegacionPanel = crearPanelNavegacion();
 
-		// a JFrame
+		// agregar paneles
+		contenido.add(filtroPanel);
+		contenido.add(Box.createVerticalStrut(10));
 		contenido.add(datosPanel);
 		contenido.add(Box.createVerticalStrut(10));
-		contenido.add(navegacionPanel, BorderLayout.SOUTH);
+		contenido.add(navegacionPanel);
 		// System.out.println(this.getLayout()); // por defecto es BorderLayout
 		add(contenido);
 		pack();
@@ -74,28 +80,28 @@ public class VentanaVisualizarEmpleados extends JFrame {
 			// NOTE: JPanel por defecto es FlowLayout
 
 			if (labels[i].equals("Tipo")) {
-				JLabels[i] = new JLabel(labels[i] + ":");
-				fila.add(JLabels[i], BorderLayout.WEST);
+				etiquetasCampo[i] = new JLabel(labels[i] + ":");
+				fila.add(etiquetasCampo[i], BorderLayout.WEST);
 
 				ButtonGroup btnGrupoLogical = new ButtonGroup();
 				JPanel btnGrupoFisical = new JPanel();
 				for (int j = 0; j < tipoTrabajadores.length; j++) {
 					// agrupamiento lógica (seleccioner vs deseleccioanr)
-					JRadioButtons[j] = new JRadioButton(tipoTrabajadores[j]);
-					btnGrupoLogical.add(JRadioButtons[j]);
+					botonesRadio[j] = new JRadioButton(tipoTrabajadores[j]);
+					btnGrupoLogical.add(botonesRadio[j]);
 
 					// agrupamiento fisíco
-					btnGrupoFisical.add(JRadioButtons[j]);
+					btnGrupoFisical.add(botonesRadio[j]);
 				}
 				fila.add(btnGrupoFisical, BorderLayout.EAST);
 
 			} else {
-				JLabels[i] = new JLabel(labels[i] + ":");
-				fila.add(JLabels[i], BorderLayout.WEST);
+				etiquetasCampo[i] = new JLabel(labels[i] + ":");
+				fila.add(etiquetasCampo[i], BorderLayout.WEST);
 
-				JTextFields[i] = new JTextField();
-				JTextFields[i].setColumns(anchoTextField);
-				fila.add(JTextFields[i], BorderLayout.EAST);
+				camposTexto[i] = new JTextField();
+				camposTexto[i].setColumns(anchoTextField);
+				fila.add(camposTexto[i], BorderLayout.EAST);
 			}
 
 			fila.add(Box.createHorizontalStrut(50), BorderLayout.CENTER, 1);
@@ -111,29 +117,83 @@ public class VentanaVisualizarEmpleados extends JFrame {
 
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Navegación"));
 
-		for (int i = 0; i < iconos.length; i++) {
-			JButtons[i] = new JButton(iconos[i]);
-			panel.add(JButtons[i]);
+		for (int i = 0; i < iconosNavegacion.length; i++) {
+			botononesNavegacion[i] = new JButton(iconosNavegacion[i]);
+			panel.add(botononesNavegacion[i]);
 		}
 
-		panel.add(labelPagination, 2);
+		panel.add(etiquetaPaginacion, 2);
 		// GOTO: linea 170
 		return panel;
 	}
 
+	// III. Panel de filtros
+	private JPanel crearPanelFiltros() {
+		String[] subPaneles = { "Departemento", "Tipo"};
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Filtros"));
+
+		for (int i = 0; i < subPaneles.length; i++) {
+			JPanel subPanel = new JPanel();
+			
+			subPanel.setLayout(new GridLayout( 2, 2));
+			
+			subPanel.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), subPaneles[i]));
+			crearCheckboxes(i, subPanel);
+			panel.add(subPanel);
+			subPanel.setAlignmentY(TOP_ALIGNMENT);
+		}
+		
+		// botones
+		JPanel botonesPanel = new JPanel();
+		for (int i = 0; i < filtroButtonLabels.length; i++) {
+			filtroButtons[i] = new JButton(filtroButtonLabels[i]);				
+			botonesPanel.add(filtroButtons[i]);
+		}
+		panel.add(botonesPanel);
+		botonesPanel.setAlignmentY(TOP_ALIGNMENT);
+		
+
+		return panel;
+	}
+
+	// III.a - crear botones
+	public void crearCheckboxes(int indice, JPanel subPanel) {
+
+		// crear botones de departamento
+		if (indice == 0) {
+			for (int j = 0; j < departamentoCheckboxLabels.length; j++) {
+				departamentoCheckboxes[j] = new JCheckBox(departamentoCheckboxLabels[j]);
+				subPanel.add(departamentoCheckboxes[j]);
+			}
+
+		} else if (indice == 1){
+			// crear botonos de tipo
+			for (int j = 0; j < tipoTrabajadores.length; j++) {
+				String s = tipoTrabajadores[j].substring(0, 1).toUpperCase()
+						+ tipoTrabajadores[j].substring(1).concat("s");
+
+				tipoCheckboxes[j] = new JCheckBox(s);
+				subPanel.add(tipoCheckboxes[j]);
+			}
+		} 
+	}
+
 	public void mostrarSinEmpleados() {
 
-		for (JTextField f : JTextFields) {
+		for (JTextField f : camposTexto) {
 			if (f != null) {
 				f.setText("");
 			}
 		}
 
-		for (JRadioButton rb : JRadioButtons) {
+		for (JRadioButton rb : botonesRadio) {
 			rb.setSelected(false);
 		}
 
-		getLabelPagination().setText("0/0");
+		getetiquetaPaginacion().setText("0/0");
 	}
 
 	public void mostrarEmpleado(String nombre, String sueldo, String fechaContrato, String departamento, boolean esJefe,
@@ -145,17 +205,17 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		getJTextField(3).setText(departamento);
 		getJRadioButton(esJefe ? 1 : 0).setSelected(true);
 		getJTextField(5).setText(incentivo);
-		getLabelPagination().setText(String.valueOf(indiceActual) + "/" + String.valueOf(cantidadEmpleados));
+		getetiquetaPaginacion().setText(String.valueOf(indiceActual) + "/" + String.valueOf(cantidadEmpleados));
 	}
 
 	// *****************************************
 	// GETTERS AND SETTERS
-	public JButton[] getJButtons() {
-		return JButtons;
+	public JButton[] getbotononesNavegacion() {
+		return botononesNavegacion;
 	}
 
 	public JButton getJButton(int indice) {
-		return JButtons[indice];
+		return botononesNavegacion[indice];
 	}
 
 	public JTextField getJTextField(int indice) {
@@ -164,20 +224,20 @@ public class VentanaVisualizarEmpleados extends JFrame {
 			System.err.println(
 					"Indice 4 es el de \"Tipo\": no es un JTextField. Para \"Incentivo\" solicita el indice 5");
 		}
-		return JTextFields[indice];
+		return camposTexto[indice];
 	}
 
 	public JRadioButton getJRadioButton(int indice) {
-		return JRadioButtons[indice];
+		return botonesRadio[indice];
 	}
 
-	public JLabel getLabelPagination() {
-		return labelPagination;
+	public JLabel getetiquetaPaginacion() {
+		return etiquetaPaginacion;
 	}
 
 	// ACTIONLISTENER
 	public void conectarControlador(ActionListener al) {
-		for (JButton b : this.getJButtons()) {
+		for (JButton b : this.getbotononesNavegacion()) {
 			b.addActionListener(al);
 		}
 	}
