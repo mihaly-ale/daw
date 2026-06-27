@@ -39,8 +39,8 @@ public class Empleado implements Serializable{
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + " ==> nombre=" + nombre + ", sueldo=" + sueldo + ", fechaContrato="
-				+ fechaContrato + ", departamento=" + departamento + "";
+		return "Empleado [nombre=" + nombre + ", sueldo=" + sueldo + ", fechaContrato=" + fechaContrato
+				+ ", departamento=" + departamento + "]";
 	}
 
 }

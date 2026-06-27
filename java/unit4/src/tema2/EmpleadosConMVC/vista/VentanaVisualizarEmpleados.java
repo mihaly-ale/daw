@@ -56,12 +56,6 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		pack();
 
 		this.mostrarSinEmpleados();
-
-		// FIXME: delete !!!
-		// ******* TEST *******
-//		populateFields.populate(JTextFields, "abcdefg");
-		// *******************
-
 	}
 
 	// CREADOR DE PANELES
@@ -150,7 +144,7 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		getJTextField(2).setText(fechaContrato);
 		getJTextField(3).setText(departamento);
 		getJRadioButton(esJefe ? 1 : 0).setSelected(true);
-		getJTextField(5).setText(esJefe ? incentivo : "0");
+		getJTextField(5).setText(incentivo);
 		getLabelPagination().setText(String.valueOf(indiceActual) + "/" + String.valueOf(cantidadEmpleados));
 	}
 

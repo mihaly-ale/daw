@@ -2,7 +2,7 @@ package tema2.EmpleadosConMVC.utils;
 
 import javax.swing.JTextField;
 
-public class populateFields {
+public class uPopulateFields {
 
 	public static void populate(JTextField[] inputs, String string) {
 		for (JTextField f : inputs) {

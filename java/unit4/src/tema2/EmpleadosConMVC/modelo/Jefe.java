@@ -30,7 +30,7 @@ public class Jefe extends Empleado {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", incentivo=" + incentivo + "";
+		return "Jefe [incentivo=" + incentivo + "]";
 	}
 
 }
