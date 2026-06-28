@@ -10,10 +10,10 @@ public class Empleado implements Serializable{
 	private LocalDate fechaContrato;
 	private String departamento;
 
-	public Empleado(String nombre, double sueldo, LocalDate fechaContrato, String departamento) {
+	public Empleado(String nombre, double sueldo, int ano, int mes, int dia, String departamento) {
 		this.nombre = nombre;
 		this.sueldo = sueldo;
-		this.fechaContrato = fechaContrato;
+		this.fechaContrato = LocalDate.of(ano, mes, dia);
 		this.departamento = departamento;
 	}
 

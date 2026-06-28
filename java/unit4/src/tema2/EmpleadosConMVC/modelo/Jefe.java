@@ -5,12 +5,12 @@ import java.time.LocalDate;
 public class Jefe extends Empleado {
 	private double incentivo;
 
-	public Jefe(String nombre, double sueldo, LocalDate fechaContrato, String departamento) {
-		super(nombre, sueldo, fechaContrato, departamento);
+	public Jefe(String nombre, double sueldo, int ano, int mes, int dia, String departamento) {
+		super(nombre, sueldo, ano, mes, dia, departamento);
 	}
 
-	public Jefe(String nombre, double sueldo, LocalDate fechaContrato, String departamento, double incentivo) {
-		super(nombre, sueldo, fechaContrato, departamento);
+	public Jefe(String nombre, double sueldo, int ano, int mes, int dia, String departamento, double incentivo) {
+		super(nombre, sueldo, ano, mes, dia, departamento);
 		this.incentivo = incentivo;
 	}
 

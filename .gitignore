@@ -5,3 +5,7 @@
 # build artifacts
 bin/
 *.class
+**/generados/
+
+#dictionary - multi-language strings
+dictionary.txt
