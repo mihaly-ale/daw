@@ -46,25 +46,25 @@ public class ControladorVisualizer implements ActionListener {
 	private void actualizarBotones() {
 		// FIXME: REFACTOR
 		if (indiceActual <= 1) {
-			vista.getJButton(0).setEnabled(false);
-			vista.getJButton(1).setEnabled(false);
-			vista.getJButton(2).setEnabled(true);
-			vista.getJButton(3).setEnabled(true);
+			vista.getBotonNavegacion(0).setEnabled(false);
+			vista.getBotonNavegacion(1).setEnabled(false);
+			vista.getBotonNavegacion(2).setEnabled(true);
+			vista.getBotonNavegacion(3).setEnabled(true);
 		} else {
-			vista.getJButton(0).setEnabled(true);
-			vista.getJButton(1).setEnabled(true);
-			
+			vista.getBotonNavegacion(0).setEnabled(true);
+			vista.getBotonNavegacion(1).setEnabled(true);
+
 		}
-		
-		if(indiceActual >= listaCompleta.size()) {
-			vista.getJButton(0).setEnabled(true);
-			vista.getJButton(1).setEnabled(true);
-			vista.getJButton(2).setEnabled(false);
-			vista.getJButton(3).setEnabled(false);
+
+		if (indiceActual >= listaCompleta.size()) {
+			vista.getBotonNavegacion(0).setEnabled(true);
+			vista.getBotonNavegacion(1).setEnabled(true);
+			vista.getBotonNavegacion(2).setEnabled(false);
+			vista.getBotonNavegacion(3).setEnabled(false);
 		} else {
-			vista.getJButton(2).setEnabled(true);
-			vista.getJButton(3).setEnabled(true);
-			
+			vista.getBotonNavegacion(2).setEnabled(true);
+			vista.getBotonNavegacion(3).setEnabled(true);
+
 		}
 	}
 
@@ -88,11 +88,11 @@ public class ControladorVisualizer implements ActionListener {
 	// ACTIONLISTENER
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == vista.getJButton(0)) {
+		if (e.getSource() == vista.getBotonNavegacion(0)) {
 			indiceActual = 1;
-		} else if (e.getSource() == vista.getJButton(1)) {
+		} else if (e.getSource() == vista.getBotonNavegacion(1)) {
 			indiceActual = Math.max(1, indiceActual - 1);
-		} else if (e.getSource() == vista.getJButton(2)) {
+		} else if (e.getSource() == vista.getBotonNavegacion(2)) {
 			indiceActual = Math.min(listaCompleta.size(), indiceActual + 1);
 		} else {
 			indiceActual = listaCompleta.size();

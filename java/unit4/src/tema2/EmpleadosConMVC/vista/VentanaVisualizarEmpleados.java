@@ -28,15 +28,15 @@ public class VentanaVisualizarEmpleados extends JFrame {
 
 	// componentes
 	// => filtro
-	private JCheckBox[] departamentoCheckboxes = new JCheckBox[departamentoCheckboxLabels.length];
-	private JCheckBox[] tipoCheckboxes = new JCheckBox[tipoTrabajadores.length];
-	private JButton[] filtroButtons = new JButton[filtroButtonLabels.length];
+	private JCheckBox[] checkboxesDepartamento = new JCheckBox[departamentoCheckboxLabels.length];
+	private JCheckBox[] checkboxesTipo = new JCheckBox[tipoTrabajadores.length];
+	private JButton[] botonesFiltro = new JButton[filtroButtonLabels.length];
 	// => datos
 	private JTextField[] camposTexto = new JTextField[labels.length];
 	// posición 4 es null - Tipo no crea JTextField, sino botones del grupo
 	private JLabel[] etiquetasCampo = new JLabel[labels.length];
 	// => navegación
-	private JButton[] botononesNavegacion = new JButton[iconosNavegacion.length];
+	private JButton[] botonesNavegacion = new JButton[iconosNavegacion.length];
 	private JRadioButton[] botonesRadio= new JRadioButton[tipoTrabajadores.length];
 	private JLabel etiquetaPaginacion = new JLabel("");
 
@@ -118,8 +118,8 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Navegación"));
 
 		for (int i = 0; i < iconosNavegacion.length; i++) {
-			botononesNavegacion[i] = new JButton(iconosNavegacion[i]);
-			panel.add(botononesNavegacion[i]);
+			botonesNavegacion[i] = new JButton(iconosNavegacion[i]);
+			panel.add(botonesNavegacion[i]);
 		}
 
 		panel.add(etiquetaPaginacion, 2);
@@ -149,8 +149,8 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		// botones
 		JPanel botonesPanel = new JPanel();
 		for (int i = 0; i < filtroButtonLabels.length; i++) {
-			filtroButtons[i] = new JButton(filtroButtonLabels[i]);				
-			botonesPanel.add(filtroButtons[i]);
+			botonesFiltro[i] = new JButton(filtroButtonLabels[i]);				
+			botonesPanel.add(botonesFiltro[i]);
 		}
 		panel.add(botonesPanel);
 		botonesPanel.setAlignmentY(TOP_ALIGNMENT);
@@ -165,8 +165,8 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		// crear botones de departamento
 		if (indice == 0) {
 			for (int j = 0; j < departamentoCheckboxLabels.length; j++) {
-				departamentoCheckboxes[j] = new JCheckBox(departamentoCheckboxLabels[j]);
-				subPanel.add(departamentoCheckboxes[j]);
+				checkboxesDepartamento[j] = new JCheckBox(departamentoCheckboxLabels[j]);
+				subPanel.add(checkboxesDepartamento[j]);
 			}
 
 		} else if (indice == 1){
@@ -175,8 +175,8 @@ public class VentanaVisualizarEmpleados extends JFrame {
 				String s = tipoTrabajadores[j].substring(0, 1).toUpperCase()
 						+ tipoTrabajadores[j].substring(1).concat("s");
 
-				tipoCheckboxes[j] = new JCheckBox(s);
-				subPanel.add(tipoCheckboxes[j]);
+				checkboxesTipo[j] = new JCheckBox(s);
+				subPanel.add(checkboxesTipo[j]);
 			}
 		} 
 	}
@@ -193,32 +193,32 @@ public class VentanaVisualizarEmpleados extends JFrame {
 			rb.setSelected(false);
 		}
 
-		getetiquetaPaginacion().setText("0/0");
+		getEtiquetaPaginacion().setText("0/0");
 	}
 
 	public void mostrarEmpleado(String nombre, String sueldo, String fechaContrato, String departamento, boolean esJefe,
 			String incentivo, int indiceActual, int cantidadEmpleados) {
 
-		getJTextField(0).setText(nombre);
-		getJTextField(1).setText(sueldo);
-		getJTextField(2).setText(fechaContrato);
-		getJTextField(3).setText(departamento);
-		getJRadioButton(esJefe ? 1 : 0).setSelected(true);
-		getJTextField(5).setText(incentivo);
-		getetiquetaPaginacion().setText(String.valueOf(indiceActual) + "/" + String.valueOf(cantidadEmpleados));
+		getCampoTexto(0).setText(nombre);
+		getCampoTexto(1).setText(sueldo);
+		getCampoTexto(2).setText(fechaContrato);
+		getCampoTexto(3).setText(departamento);
+		getBotonesRadio(esJefe ? 1 : 0).setSelected(true);
+		getCampoTexto(5).setText(incentivo);
+		getEtiquetaPaginacion().setText(String.valueOf(indiceActual) + "/" + String.valueOf(cantidadEmpleados));
 	}
 
 	// *****************************************
 	// GETTERS AND SETTERS
-	public JButton[] getbotononesNavegacion() {
-		return botononesNavegacion;
+	public JButton[] getBotonesNavegacion() {
+		return botonesNavegacion;
 	}
 
-	public JButton getJButton(int indice) {
-		return botononesNavegacion[indice];
+	public JButton getBotonNavegacion(int indice) {
+		return botonesNavegacion[indice];
 	}
 
-	public JTextField getJTextField(int indice) {
+	public JTextField getCampoTexto(int indice) {
 		if (indice == 4) {
 
 			System.err.println(
@@ -227,20 +227,42 @@ public class VentanaVisualizarEmpleados extends JFrame {
 		return camposTexto[indice];
 	}
 
-	public JRadioButton getJRadioButton(int indice) {
+	public JRadioButton getBotonesRadio(int indice) {
 		return botonesRadio[indice];
 	}
 
-	public JLabel getetiquetaPaginacion() {
+	public JLabel getEtiquetaPaginacion() {
 		return etiquetaPaginacion;
+	}	
+
+	public JCheckBox getCheckboxDepartamento(int indice) {
+		return checkboxesDepartamento[indice];
+	}
+
+	public JCheckBox getCheckboxTipo(int indice) {
+		return checkboxesTipo[indice];
+	}
+	
+	public JButton[] getBotonesFiltro() {
+		return botonesFiltro;
+	}
+
+	public JButton getBotonFiltro(int indice) {
+		return botonesFiltro[indice];
 	}
 
 	// ACTIONLISTENER
 	public void conectarControlador(ActionListener al) {
-		for (JButton b : this.getbotononesNavegacion()) {
+		for (JButton b : this.getBotonesNavegacion()) {
+			b.addActionListener(al);
+		}
+		
+		for (JButton b : this.getBotonesFiltro()) {
 			b.addActionListener(al);
 		}
 	}
+	
+	
 
 }
 
