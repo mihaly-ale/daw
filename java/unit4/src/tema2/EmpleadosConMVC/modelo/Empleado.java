@@ -3,7 +3,8 @@ package tema2.EmpleadosConMVC.modelo;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Empleado implements Serializable{
+public class Empleado implements Serializable {
+	// GOTO: linea 48
 
 	private String nombre;
 	private double sueldo;
@@ -44,3 +45,18 @@ public class Empleado implements Serializable{
 	}
 
 }
+
+// https://en.wikipedia.org/wiki/Serialization
+/*
+ * Serialization is the process of translating a data structure or object state
+ * into a format that can be stored (e.g. files in secondary storage devices,
+ * data buffers in primary storage devices) or transmitted (e.g. data streams
+ * over computer networks) and reconstructed later (possibly in a different
+ * computer environment).abstract
+ */
+
+// https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html
+/*
+ * Doesn't offer methods, fields only offers the semantic of being serializable:
+ * "the class is safe to serialize".
+ */

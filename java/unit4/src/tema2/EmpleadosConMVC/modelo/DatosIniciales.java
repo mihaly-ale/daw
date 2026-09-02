@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DatosIniciales {
+	// Ofrece "raw data", en realidad esto viene de base de datos
 
 	public static ArrayList<Empleado> crearLista() {
 		ArrayList<Empleado> lista = new ArrayList<>();
